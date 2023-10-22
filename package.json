@@ -2,7 +2,7 @@
   "name": "erk-fzf",
   "displayName": "erk-fzf",
   "description": "fuzzy auto completion for pyerk",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.83.0"
   },
