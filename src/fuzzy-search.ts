@@ -11,8 +11,6 @@ export default class FuzzySearch {
     this.onDidChangeValue = this.onDidChangeValue.bind(this);
     this.onAccept = this.onAccept.bind(this);
 
-    console.log('constructor 1');
-
     this.search.onData(searchItems => {
       try {
         const quickPickItems = [...new Set([...searchItems])]
@@ -25,7 +23,6 @@ export default class FuzzySearch {
       } finally {
         this.quickPick.busy = false;
       }
-      console.log('constructor 2');
     });
 
     this.quickPick.placeholder = "Fuzzy search";
@@ -38,7 +35,6 @@ export default class FuzzySearch {
     this.quickPick.show();
 
     this.find('');
-    console.log('constructor 3');
   }
 
   private onDidChangeValue(value: string) {

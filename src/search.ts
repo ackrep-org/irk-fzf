@@ -25,14 +25,40 @@ function getOsPath(): String {
 };
 
 
+function getAutoCompleteCandidateFile() {
+  const fname = ".ac_candidates.txt"
+  const workspaceFolders = vscode.workspace.workspaceFolders;
+  if (!workspaceFolders) {
+
+    let msg = `erkfzf: no workspace defined -> could not load ${fname}`
+    console.error(msg);
+    vscode.window.showErrorMessage(msg);
+    return; // No workspace folders
+  }
+
+  const firstWorkspaceFolder = workspaceFolders[0];
+
+  let path = `${firstWorkspaceFolder.uri.path}/${fname}`;
+
+  console.log(`path: '${path}'`);
+
+  return path;
+}
+
 function getFzfPath(): string {
   return process.platform === 'win32' ? `${getOsPath()}/fzf.exe` : `${getOsPath()}/fzf`;
 };
 
 function buildSearch(fzf: string, text: string): string {
 
+  console.log(`build-search: '${text}'`);
+
+  // TODO: evaluate if this is the optimal place for this call
+  // should it really be called before every search?
+  const autoCompleteCandidateFile = getAutoCompleteCandidateFile();
+
   // return text ? `${fd} -H --exclude '.git' --type f . '${path || ''}' | ${fzf} --tiebreak=end -m -f '${text}'\n` : '';
-  return "echo built-search";
+  return `echo ${autoCompleteCandidateFile}`;
 }
 
 export default class Search {

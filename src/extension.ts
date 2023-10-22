@@ -28,7 +28,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		const position = editor.selection.active;
-		const snippet = new vscode.SnippetString(`Hello, World: ${result}`);
+		const snippet = new vscode.SnippetString(`Hello, World:...`);
 		editor.insertSnippet(snippet, position);
 
 	});
