@@ -14,7 +14,7 @@ export default class FuzzySearch {
     this.search.onData(searchItems => {
       try {
         const quickPickItems = [...new Set([...searchItems])]
-          .slice(0, 10)
+          .slice(0, 30)
           .map((filePath) =>
             createQuickPickItem(filePath, true)
           );
@@ -55,8 +55,6 @@ export default class FuzzySearch {
 
   onAccept(e: any) {
 
-    console.log(`accept`);
-
     const selectedItem = this.quickPick.selectedItems[0].result_line;
     if (selectedItem) {
 
@@ -82,7 +80,7 @@ function createQuickPickItem(
 
   return {
     label: result_line,
-    description: "test description",
+    //description: "test description",
     alwaysShow: true,
     result_line,
   };

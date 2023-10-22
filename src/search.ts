@@ -2,8 +2,8 @@ import { QuickPickItem } from './types';
 //const { spawn } = require('child_process');
 import * as vscode from 'vscode';
 
-
 import { exec } from 'child_process';
+import fs = require('fs');
 
 interface DataResultCallback {
   (filePaths: string[]): void;
@@ -36,11 +36,16 @@ function getAutoCompleteCandidateFile() {
     return; // No workspace folders
   }
 
+
   const firstWorkspaceFolder = workspaceFolders[0];
 
   let path = `${firstWorkspaceFolder.uri.path}/${fname}`;
-
-  console.log(`path: '${path}'`);
+  if (!fs.existsSync(path)) {
+    let msg = `Error: ${fname} does not exist in the root dir of current workspace (${firstWorkspaceFolder})`
+    console.error(msg);
+    vscode.window.showErrorMessage(msg);
+    return;
+  }
 
   return path;
 }
@@ -51,14 +56,13 @@ function getFzfPath(): string {
 
 function buildSearch(fzf: string, text: string): string {
 
-  console.log(`build-search: '${text}'`);
-
   // TODO: evaluate if this is the optimal place for this call
   // should it really be called before every search?
   const autoCompleteCandidateFile = getAutoCompleteCandidateFile();
 
   // return text ? `${fd} -H --exclude '.git' --type f . '${path || ''}' | ${fzf} --tiebreak=end -m -f '${text}'\n` : '';
-  return `echo ${autoCompleteCandidateFile}`;
+  // TODO: ship fzf binary with this extension
+  return `cat ${autoCompleteCandidateFile} | fzf -m --filter '${text}'` ;
 }
 
 export default class Search {
@@ -77,30 +81,26 @@ export default class Search {
   }
 
   private async onResultData(data: string) {
-    console.log(`onResultData: '${data}'`);
 
     this.fileNames = this.fileNames
       .concat(
         data.toString()
           .split('\n')
           .filter(filePath => filePath.trim() !== '')
-      ).slice(0, 10);
+      ).slice(0, 30);
 
     this.onDataListeners.forEach(listener => listener(this.fileNames));
   }
 
   async search(text: string): Promise<void> {
-    console.log(`search: '${text}'`);
 
     this.fileNames = [];
     if(text.length > 0){
       const command = buildSearch(this.fzfPath, text.replace(/::/g, '').toLowerCase());
 
-      console.log(`command: '${command}'`);
 
       //this.sh.stdin.write(Buffer.from(command));
       const result = await executeCommand(command);
-      console.log(`command-result: '${result}'`);
       this.onResultData(result);
 
 
