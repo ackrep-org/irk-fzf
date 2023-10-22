@@ -1,7 +1,10 @@
 # erk-fzf
 
 This is an experimental vs code extension to enable autocompletion support for [pyerk](https://github.com/ackrep-org/pyerk-core).
-It is heavily based on: <https://code.visualstudio.com/api/get-started/your-first-extension>.
+It is heavily based on:
+
+- <https://github.com/tatosjb/vscode-fuzzy-search>
+- <https://code.visualstudio.com/api/get-started/your-first-extension>.
 
 ## Test (development of this extension)
 
