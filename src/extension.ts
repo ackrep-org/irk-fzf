@@ -1,6 +1,8 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import FuzzySearch from './fuzzy-search';
+
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -13,7 +15,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('erk-fzf.main', () => {
+	let disposable = vscode.commands.registerCommand('erk-fzf.main', async () => {
 		// The code you place here will be executed every time your command is executed
 		// Display a message box to the user
 		vscode.window.showInformationMessage('Hello ERK World from erk-fzf!');
@@ -26,14 +28,27 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		const position = editor.selection.active;
-		const snippet = new vscode.SnippetString('Hello, World!');
+		const snippet = new vscode.SnippetString(`Hello, World: ${result}`);
 		editor.insertSnippet(snippet, position);
 
 	});
 
-
+	// *********************************************************************************
+	// Next function
+	// *********************************************************************************
 
 	context.subscriptions.push(disposable);
+
+	let disposable2 = vscode.commands.registerCommand('erk-fzf.search', () => {
+
+		const fuzzySearch = new FuzzySearch(context);
+
+	});
+
+
+	context.subscriptions.push(disposable2);
+
+
 }
 
 // This method is called when your extension is deactivated

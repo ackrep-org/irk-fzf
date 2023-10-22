@@ -16,6 +16,10 @@
       {
         "command": "erk-fzf.main",
         "title": "erkfzf"
+      },
+      {
+        "command": "erk-fzf.search",
+        "title": "erksearch"
       }
     ]
   },
