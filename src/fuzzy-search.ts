@@ -56,7 +56,7 @@ export default class FuzzySearch {
 
   onAccept(e: any) {
 
-    const selectedItem = this.quickPick.selectedItems[0].result_line;
+    const selectedItem = this.quickPick.selectedItems[0].resultLine;
     if (selectedItem) {
 
       const editor = vscode.window.activeTextEditor;
@@ -75,15 +75,15 @@ export default class FuzzySearch {
 
 
 function createQuickPickItem(
-  result_line: string,
+  resultLine: string,
   isRecent: boolean
 ): QuickPickItem {
 
   return {
-    label: result_line,
+    label: resultLine,
     //description: "test description",
     alwaysShow: true,
-    result_line,
+    resultLine: resultLine,
   };
 }
 
