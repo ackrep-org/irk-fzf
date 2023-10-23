@@ -25,6 +25,7 @@ export default class FuzzySearch {
       }
     });
 
+    this.quickPick.value = getCurrentLineText().trim();
     this.quickPick.placeholder = "Fuzzy search";
     this.quickPick.matchOnDescription = true;
     (this.quickPick as any).sortByLabel = false;
@@ -84,4 +85,19 @@ function createQuickPickItem(
     alwaysShow: true,
     result_line,
   };
+}
+
+
+// from perplexityAI:
+function getCurrentLineText(): string {
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) {
+    return '';
+  }
+
+  const selection = editor.selection;
+  const line = selection.active.line;
+  const lineText = editor.document.lineAt(line).text;
+
+  return lineText;
 }
