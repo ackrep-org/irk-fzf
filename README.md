@@ -24,8 +24,10 @@ See also [vsc-extension-quickstart.md](vsc-extension-quickstart.md).
 
 ## Build package
 
-- `npm install -g @vscode/vsce`
-- from the root dir of the extension: `vsce package`
+- from the root dir of the extension:
+    - `npm install`
+    - `npm install -g @vscode/vsce`
+    - `vsce package`
     - this creates a file like `extensionname.vsix`
 
 
@@ -34,7 +36,7 @@ See also [vsc-extension-quickstart.md](vsc-extension-quickstart.md).
 For users, to install a `.vsix` file in VS Code:
 
 - Go to the Extensions view.
-- Click **Views and More Actions...**
+- Click the `···`-menu (**Views and More Actions...**)
 - Select **Install from VSIX...**
 
 or in your terminal, run the following command:
