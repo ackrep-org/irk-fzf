@@ -25,7 +25,8 @@ export default class FuzzySearch {
       }
     });
 
-    this.quickPick.value = getCurrentLineText().trim();
+    let line = getCurrentLineText();
+    this.quickPick.value = getRelevantLinePart(line);
     this.quickPick.placeholder = "Fuzzy search";
     this.quickPick.matchOnDescription = true;
     (this.quickPick as any).sortByLabel = false;
@@ -59,19 +60,14 @@ export default class FuzzySearch {
     const selectedItem = this.quickPick.selectedItems[0].resultLine;
     if (selectedItem) {
 
-      const editor = vscode.window.activeTextEditor;
-      if (!editor) {
-      vscode.window.showErrorMessage("Editor does not exist!");
-      return;
-      }
-
-      const position = editor.selection.active;
-      const snippet = new vscode.SnippetString(selectedItem);
-      editor.insertSnippet(snippet, position);
+      console.log("123");
+      replaceEndInCurrentLine(selectedItem);
     }
+
+
     this.quickPick.hide();
   }
-}
+} // end off class
 
 
 function createQuickPickItem(
@@ -100,4 +96,42 @@ function getCurrentLineText(): string {
   const lineText = editor.document.lineAt(line).text;
 
   return lineText;
+}
+
+
+/**
+ * assume to get a complete line,
+ * return only the part which should be autocompleted
+*/
+function getRelevantLinePart(line: string): string {
+  // regex-split at one of those chars: " ", ",", "=", ";"
+  let parts = line.trim().split(/[\s,=;]+/);
+  return parts[parts.length -1];
+
+}
+
+
+/**
+ * take the result from the pick dialogue and insert it in the current line
+ */
+function replaceEndInCurrentLine(newEnd: string): void{
+  const editor = vscode.window.activeTextEditor;
+
+  if (!editor) {
+    vscode.window.showErrorMessage("Editor does not exist!");
+    return;
+  }
+
+  const line = editor.document.lineAt(editor.selection.active.line);
+
+  const lineText = getCurrentLineText();
+  const oldEnd = getRelevantLinePart(lineText);
+  const newLineText = lineText.replace(oldEnd, newEnd);
+
+
+  editor.edit((editBuilder) => {
+    editBuilder.replace(line.range, newLineText);
+  });
+  console.log("done:");
+  console.log(newLineText);
 }
