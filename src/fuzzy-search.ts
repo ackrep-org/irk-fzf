@@ -105,10 +105,14 @@ function getCurrentLineText(): string {
 */
 function getRelevantLinePart(line: string): string {
   // regex-split at one of those chars: " ", ",", "=", ";"
-  let parts = line.trim().split(/[\s,=;]+/);
+  let parts = line.trim().split(/[\s,\.\(\)\{\}=;]+/);
   return parts[parts.length -1];
 
 }
+
+
+// TODO: test regex
+// TODO: prevent bad code in fzf command (escape " etc)
 
 
 /**
