@@ -139,8 +139,26 @@ function replaceEndInCurrentLine(newEnd: string): void{
   const lineObj = getCurrentLineText();
   const oldEnd = getRelevantLinePart(lineObj.leftOfCursor);
 
-  const newPartLeftOfCursor = lineObj.leftOfCursor.replace(oldEnd, newEnd);
-  const newLineText = `${newPartLeftOfCursor}${lineObj.rightOfCursor}`;
+  let newPartLeftOfCursor: string;
+
+  if (oldEnd === "") {
+    newPartLeftOfCursor = `${lineObj.leftOfCursor}${newEnd}`;
+
+  } else {
+
+    // we want to replace only the last occurence of oldEnd
+    let s = lineObj.leftOfCursor;
+    let index = s.lastIndexOf(oldEnd);
+    if (index !== -1) {
+      newPartLeftOfCursor = s.substring(0, index) + newEnd + s.substring(index + oldEnd.length);
+
+    } else {
+      // old end could not be found. change nothing
+      newPartLeftOfCursor = lineObj.leftOfCursor;
+    }
+  }
+
+  const newLineText = newPartLeftOfCursor + lineObj.rightOfCursor;
 
   editor.edit((editBuilder) => {
     editBuilder.replace(line.range, newLineText);
