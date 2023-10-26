@@ -13,24 +13,24 @@ function getOsPath(): String {
   const extensionPath = vscode.extensions.getExtension('tatosjb.fuzzy-search')?.extensionPath;
 
   switch (process.platform) {
-    case 'darwin':
-      return `${extensionPath}/binaries/darwin`;
-    case 'win32':
-      return `${extensionPath}/binaries/windows`;
-    case 'linux':
-      return `${extensionPath}/binaries/linux`;
-    default:
-      return `${extensionPath}/binaries/linux`;
+  case 'darwin':
+    return `${extensionPath}/binaries/darwin`;
+  case 'win32':
+    return `${extensionPath}/binaries/windows`;
+  case 'linux':
+    return `${extensionPath}/binaries/linux`;
+  default:
+    return `${extensionPath}/binaries/linux`;
   }
 };
 
 
 function getAutoCompleteCandidateFile() {
-  const fname = ".ac_candidates.txt"
+  const fname = ".ac_candidates.txt";
   const workspaceFolders = vscode.workspace.workspaceFolders;
   if (!workspaceFolders) {
 
-    let msg = `erkfzf: no workspace defined -> could not load ${fname}`
+    let msg = `erkfzf: no workspace defined -> could not load ${fname}`;
     console.error(msg);
     vscode.window.showErrorMessage(msg);
     return; // No workspace folders
@@ -41,7 +41,7 @@ function getAutoCompleteCandidateFile() {
 
   let path = `${firstWorkspaceFolder.uri.path}/${fname}`;
   if (!fs.existsSync(path)) {
-    let msg = `Error: ${fname} does not exist in the root dir of current workspace (${firstWorkspaceFolder})`
+    let msg = `Error: ${fname} does not exist in the root dir of current workspace (${firstWorkspaceFolder})`;
     console.error(msg);
     vscode.window.showErrorMessage(msg);
     return;
