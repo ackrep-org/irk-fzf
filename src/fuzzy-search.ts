@@ -25,8 +25,8 @@ export default class FuzzySearch {
       }
     });
 
-    let line = getCurrentLineText();
-    this.quickPick.value = getRelevantLinePart(line);
+    let lineObj = getCurrentLineText();
+    this.quickPick.value = getRelevantLinePart(lineObj.leftOfCursor);
     this.quickPick.placeholder = "Fuzzy search";
     this.quickPick.matchOnDescription = true;
     (this.quickPick as any).sortByLabel = false;
@@ -85,17 +85,24 @@ function createQuickPickItem(
 
 
 // from perplexityAI:
-function getCurrentLineText(): string {
+function getCurrentLineText(): {fullText: string, leftOfCursor: string, rightOfCursor: string, pos: number} {
   const editor = vscode.window.activeTextEditor;
   if (!editor) {
-    return '';
+    return {"fullText": "", "leftOfCursor": "", "rightOfCursor": "", "pos": 0};
   }
 
   const selection = editor.selection;
   const line = selection.active.line;
   const lineText = editor.document.lineAt(line).text;
+  const txtLOC = lineText.substring(0, selection.active.character);
 
-  return lineText;
+  // this means: from the given index until the end
+  const txtROC = lineText.substring(selection.active.character);
+
+  // console.log(selection.active.character);
+  // vscode.window.showInformationMessage(`line ${line}, char ${selection.active.character}`);
+
+  return {"fullText": lineText, "leftOfCursor": txtLOC, rightOfCursor: txtROC, "pos": selection.active.character};
 }
 
 
@@ -117,6 +124,7 @@ function getRelevantLinePart(line: string): string {
 
 /**
  * take the result from the pick dialogue and insert it in the current line
+ * at the correct place. The line is segmented in partLeftOfCursor and partRightOfCursor
  */
 function replaceEndInCurrentLine(newEnd: string): void{
   const editor = vscode.window.activeTextEditor;
@@ -128,14 +136,23 @@ function replaceEndInCurrentLine(newEnd: string): void{
 
   const line = editor.document.lineAt(editor.selection.active.line);
 
-  const lineText = getCurrentLineText();
-  const oldEnd = getRelevantLinePart(lineText);
-  const newLineText = lineText.replace(oldEnd, newEnd);
+  const lineObj = getCurrentLineText();
+  const oldEnd = getRelevantLinePart(lineObj.leftOfCursor);
 
+  const newPartLeftOfCursor = lineObj.leftOfCursor.replace(oldEnd, newEnd);
+  const newLineText = `${newPartLeftOfCursor}${lineObj.rightOfCursor}`;
 
   editor.edit((editBuilder) => {
     editBuilder.replace(line.range, newLineText);
   });
-  console.log("done:");
-  console.log(newLineText);
+
+
+  // now move the cursor at the end of the inserted text
+  const currentPosition = editor.selection.active;
+
+  // `undefined` → same line; second arg: sepecific column
+  const newPosition = currentPosition.with(undefined, newPartLeftOfCursor.length);
+  editor.selection = new vscode.Selection(newPosition, newPosition);
+
+
 }
