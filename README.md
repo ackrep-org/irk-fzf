@@ -1,6 +1,6 @@
 # irk-fzf
 
-This is an experimental vs code extension to enable autocompletion support for [pyerk](https://github.com/ackrep-org/pyirk-core).
+This is an experimental vs code extension to enable autocompletion support for [pyirk](https://github.com/ackrep-org/pyirk-core).
 It is heavily based on:
 
 - <https://github.com/tatosjb/vscode-fuzzy-search>
@@ -22,7 +22,7 @@ For users, to install a `.vsix` file in VS Code:
 
 Alternatively in your terminal, run the following command:
 
-- `code --install-extension erk-fzf-0.2.2.vsix`
+- `code --install-extension erk-fzf-0.2.3.vsix`
 
 **Strongly recommended:**
 
@@ -41,8 +41,8 @@ Alternatively in your terminal, run the following command:
 ### Preparation
 
 - Ensure `pyirk --version` >= `0.9.0`-
-- Navigate to the directory of your erk package (where `irkpackage.toml` is located)
-- Create a autocompletion file (`.ac_candidates.txt`) with `pyerk --load-mod my_mod.py mm -ac`
+- Navigate to the directory of your irk package (where `irkpackage.toml` is located)
+- Create a autocompletion file (`.ac_candidates.txt`) with `pyirk --load-mod my_mod.py mm -ac`
 - The file `.ac_candidates.txt` is necessary for every project irk-fzf is used for.
 
 
@@ -75,4 +75,4 @@ ing of your choice
     - `npm install`
     - `npm install -g @vscode/vsce`
     - `vsce package`
-    - this creates a file like `extensionname.vsix`
+    - this creates a file like `extension-name.vsix`
