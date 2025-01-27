@@ -40,10 +40,21 @@ For users, to install a `.vsix` file in VS Code:
 
 ### Preparation
 
-- Ensure `pyirk --version` >= `0.9.0`-
+- Ensure `pyirk --version` >= `0.9.0` is installed
 - Navigate to the directory of your irk package (where `irkpackage.toml` is located)
-- Create a autocompletion file (`.ac_candidates.txt`) with `pyirk --load-mod my_mod.py mm -ac`
-- The file `.ac_candidates.txt` is necessary for every project irk-fzf is used for.
+- Open VS Code **in this directory**
+    - This is necessary such that vs code can find the autocompletion file
+    - This can be achieved in the following ways:
+        - a)
+            - Open vs code (e.g. via Desktop shortcut)
+            - If there is already an open project choose *File* → *Close Folder*
+            - Open the directory of your irk-package via *File* → *Open Folder*
+        - b)
+            - open a command line and navigate to the directory of your irk-package
+            - run `code .`
+- Open a terminal
+- Run `pyirk --load-mod my_mod.py mm -ac`
+    - This creates the autocompletion file (`.ac_candidates.txt`), which is necessary for every irk-package irk-fzf is used for.
 
 
 ### Fuzzy Autocompletion
