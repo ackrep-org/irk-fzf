@@ -30,7 +30,7 @@ function getAutoCompleteCandidateFile() {
   const workspaceFolders = vscode.workspace.workspaceFolders;
   if (!workspaceFolders) {
 
-    let msg = `erkfzf: no workspace defined -> could not load ${fname}`;
+    let msg = `irkfzf: no workspace defined -> could not load ${fname}`;
     console.error(msg);
     vscode.window.showErrorMessage(msg);
     return; // No workspace folders
@@ -38,10 +38,11 @@ function getAutoCompleteCandidateFile() {
 
 
   const firstWorkspaceFolder = workspaceFolders[0];
+  const allPaths = vscode.workspace.workspaceFolders?.map(folder => folder.uri.fsPath).join(',') || '';;
 
   let path = `${firstWorkspaceFolder.uri.path}/${fname}`;
   if (!fs.existsSync(path)) {
-    let msg = `Error: ${fname} does not exist in the root dir of current workspace (${firstWorkspaceFolder})`;
+    let msg = `Error: could not open path ${path}.\nDebugging information: ${allPaths}\n\n`;
     console.error(msg);
     vscode.window.showErrorMessage(msg);
     return;

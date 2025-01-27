@@ -146,7 +146,7 @@ function replaceEndInCurrentLine(newEnd: string): void{
 
   } else {
 
-    // we want to replace only the last occurence of oldEnd
+    // we want to replace only the last occurrence of oldEnd
     let s = lineObj.leftOfCursor;
     let index = s.lastIndexOf(oldEnd);
     if (index !== -1) {
@@ -168,7 +168,7 @@ function replaceEndInCurrentLine(newEnd: string): void{
   // now move the cursor at the end of the inserted text
   const currentPosition = editor.selection.active;
 
-  // `undefined` → same line; second arg: sepecific column
+  // `undefined` → same line; second arg: specific column
   const newPosition = currentPosition.with(undefined, newPartLeftOfCursor.length);
   editor.selection = new vscode.Selection(newPosition, newPosition);
 

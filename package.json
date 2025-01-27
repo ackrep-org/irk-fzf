@@ -1,9 +1,9 @@
 {
-  "name": "erk-fzf",
-  "displayName": "erk-fzf",
-  "description": "fuzzy auto completion for pyerk",
-  "version": "0.2.2",
-  "repository": "https://github.com/ackrep-org/erk-fzf",
+  "name": "irk-fzf",
+  "displayName": "irk-fzf",
+  "description": "fuzzy auto completion for pyirk",
+  "version": "0.2.3",
+  "repository": "https://github.com/ackrep-org/irk-fzf",
   "engines": {
     "vscode": "^1.83.0"
   },
@@ -15,12 +15,12 @@
   "contributes": {
     "commands": [
       {
-        "command": "erk-fzf.main",
-        "title": "erkfzf"
+        "command": "irk-fzf.main",
+        "title": "irkfzf"
       },
       {
-        "command": "erk-fzf.search",
-        "title": "erksearch"
+        "command": "irk-fzf.search",
+        "title": "irksearch"
       }
     ]
   },
