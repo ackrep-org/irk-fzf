@@ -70,6 +70,11 @@ further characters can be entered to refine the result. See the following exampl
 
 ## Development of this Extension
 
+### Preparation
+
+- Download and install [node.js](https://nodejs.org/en/download/).
+- Run `npm install` from the root directory of this repo
+
 ### Test
 
 Inside the editor, open `src/extension.ts` and press `F5`. This will compile and run the extension in a new Extension Development Host window.
