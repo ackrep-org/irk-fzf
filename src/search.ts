@@ -16,7 +16,7 @@ function getOsPath(): String {
   case 'darwin':
     return `${extensionPath}/binaries/darwin`;
   case 'win32':
-    return `${extensionPath}/binaries/windows`;
+    return `${extensionPath}\\binaries\\windows`;
   case 'linux':
     return `${extensionPath}/binaries/linux`;
   default:
@@ -38,9 +38,16 @@ function getAutoCompleteCandidateFile() {
 
 
   const firstWorkspaceFolder = workspaceFolders[0];
-  const allPaths = vscode.workspace.workspaceFolders?.map(folder => folder.uri.fsPath).join(',') || '';;
+  const allPaths = vscode.workspace.workspaceFolders?.map(folder => folder.uri.fsPath).join(',') || '';
+  console.log("firstWorkspaceFolder:", firstWorkspaceFolder.uri.fsPath)
 
-  let path = `${firstWorkspaceFolder.uri.path}/${fname}`;
+  let path;
+  if (process.platform === 'win32') {
+    path = `${firstWorkspaceFolder.uri.fsPath}\\${fname}`;
+  } else {
+    path = `${firstWorkspaceFolder.uri.fsPath}/${fname}`;
+  }
+
   if (!fs.existsSync(path)) {
     let msg = `Error: could not open path ${path}.\nDebugging information: ${allPaths}\n\n`;
     console.error(msg);
@@ -52,7 +59,8 @@ function getAutoCompleteCandidateFile() {
 }
 
 function getFzfPath(): string {
-  return process.platform === 'win32' ? `${getOsPath()}/fzf.exe` : `${getOsPath()}/fzf`;
+
+  return process.platform === 'win32' ? `${getOsPath()}\\fzf.exe` : `${getOsPath()}/fzf`;
 };
 
 function buildSearch(fzf: string, text: string): string {
@@ -60,10 +68,22 @@ function buildSearch(fzf: string, text: string): string {
   // TODO: evaluate if this is the optimal place for this call
   // should it really be called before every search?
   const autoCompleteCandidateFile = getAutoCompleteCandidateFile();
+  const fzfPath = getFzfPath();
+  // console.log("getFzfPath:", getOsPath())
 
   // return text ? `${fd} -H --exclude '.git' --type f . '${path || ''}' | ${fzf} --tiebreak=end -m -f '${text}'\n` : '';
   // TODO: ship fzf binary with this extension
-  return `cat ${autoCompleteCandidateFile} | fzf -m --filter '${text}'` ;
+  var command: string;
+  if (process.platform === 'win32') {
+    command = `type ${autoCompleteCandidateFile} | ${fzfPath} -m --filter "${text}"` ;
+    //command = `type ${autoCompleteCandidateFile} | echo` ;
+  } else {
+    command = `cat ${autoCompleteCandidateFile} | ${fzfPath} -m --filter '${text}'` ;
+  }
+  
+  //command = `type ${autoCompleteCandidateFile}`;
+  console.log("command:", command)
+  return command;
 }
 
 export default class Search {
@@ -100,6 +120,7 @@ export default class Search {
       const command = buildSearch(this.fzfPath, text.replace(/::/g, '').toLowerCase());
 
 
+      console.log("final command:", command)
       //this.sh.stdin.write(Buffer.from(command));
       const result = await executeCommand(command);
       this.onResultData(result);
@@ -119,10 +140,16 @@ function executeCommand(command: string): Promise<string> {
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
       if (error) {
-        reject(error);
+        // console.log("stderr:", stderr);
+        // console.log("stdout:", stdout);
+        //reject(error);
+        console.log("error obj:", error);
+        reject(`Error: ${error.message}\nStderr: ${stderr}`);
       } else {
         resolve(stdout);
       }
     });
   });
 }
+
+

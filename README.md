@@ -6,6 +6,7 @@ It is heavily based on:
 - <https://github.com/tatosjb/vscode-fuzzy-search>
 - <https://code.visualstudio.com/api/get-started/your-first-extension>.
 
+As a backend it uses [*fzf*](https://github.com/junegunn/fzf) - a fuzzy finder tool for the commandline.
 
 **Note:** This extension originally was named "erk-fzf". If you had installed this extension before 0.2.3
 please uninstall it first and delete the keyboard shortcut bound to `erk-fzf.search`.
@@ -13,7 +14,16 @@ please uninstall it first and delete the keyboard shortcut bound to `erk-fzf.sea
 
 ## Installation
 
-For users, to install a `.vsix` file in VS Code:
+### Preparation
+
+- Install the fuzzy-finder command line utility [*fzf*](https://github.com/junegunn/fzf?tab=readme-ov-file#installation).
+- Depending on your installation method it might be necessary to manually add the installation path (e.g. `/c/Users/your_user_name/.fzf/bin`) to the `PATH` environment variable. 
+- Make sure that `fzf` is an executable command: Open a new terminal in vscode and run `fzf --version`.
+  This should return a version string.
+
+- Alternatively: Install the vs-code-extension "tatosjb.fuzzy-search". It is shipped with the fzf-executables for all major platforms.
+
+### Install the extension via `.vsix` file in VS Code
 
 - Download the latest version from the [releases](releases) section.
 - In VS Code or Codium:
@@ -22,7 +32,7 @@ For users, to install a `.vsix` file in VS Code:
     - Select **Install from VSIX...**
 
 - Alternatively in your terminal, run the following command:
-    - `code --install-extension irk-fzf-0.2.3.vsix`
+    - `code --install-extension irk-fzf-0.2.3.vsix` (replace the version number if there is a newer version available)
 
 **Strongly recommended:**
 
