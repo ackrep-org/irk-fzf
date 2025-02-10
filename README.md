@@ -16,12 +16,13 @@ please uninstall it first and delete the keyboard shortcut bound to `erk-fzf.sea
 
 ### Preparation
 
-- Install the fuzzy-finder command line utility [*fzf*](https://github.com/junegunn/fzf?tab=readme-ov-file#installation).
-- Depending on your installation method it might be necessary to manually add the installation path (e.g. `/c/Users/your_user_name/.fzf/bin`) to the `PATH` environment variable. 
-- Make sure that `fzf` is an executable command: Open a new terminal in vscode and run `fzf --version`.
-  This should return a version string.
-
-- Alternatively: Install the vs-code-extension "tatosjb.fuzzy-search". It is shipped with the fzf-executables for all major platforms.
+- On Windows:
+    - Install the vs-code-extension "tatosjb.fuzzy-search". It is shipped with the fzf-executables for all major platforms.
+- On Unix-based systems:
+    - Install the fuzzy-finder command line utility [*fzf*](https://github.com/junegunn/fzf?tab=readme-ov-file#installation).
+    - Depending on your installation method it might be necessary to manually add the installation path to the `PATH` environment variable.
+    - Make sure that `fzf` is an executable command: Open a new terminal in vscode and run `fzf --version`. This should return a version string.
+    - If this causes problems you can also install the above mentioned extension.
 
 ### Install the extension via `.vsix` file in VS Code
 

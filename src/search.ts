@@ -68,24 +68,29 @@ function buildSearch(fzf: string, text: string): string {
   // TODO: evaluate if this is the optimal place for this call
   // should it really be called before every search?
   const autoCompleteCandidateFile = getAutoCompleteCandidateFile();
-  const fzfPath = getFzfPath();
-  // console.log("getFzfPath:", getOsPath())
 
-  // return text ? `${fd} -H --exclude '.git' --type f . '${path || ''}' | ${fzf} --tiebreak=end -m -f '${text}'\n` : '';
-  // TODO: ship fzf binary with this extension
+  // TODO: ship fzf binary with **this** extension
+  const extensionPath = vscode.extensions.getExtension('tatosjb.fuzzy-search')?.extensionPath;
+  var fzfPath: string
+  if (extensionPath === undefined) {
+    // assume the command is installed in PATH
+    fzfPath = "fzf"
+  } else {
+    fzfPath = getFzfPath();
+  }
+
   var command: string;
   if (process.platform === 'win32') {
     command = `type ${autoCompleteCandidateFile} | ${fzfPath} -m --filter "${text}"` ;
-    //command = `type ${autoCompleteCandidateFile} | echo` ;
   } else {
     command = `cat ${autoCompleteCandidateFile} | ${fzfPath} -m --filter '${text}'` ;
   }
-  
-  //command = `type ${autoCompleteCandidateFile}`;
-  console.log("command:", command)
+
   return command;
 }
 
+
+// todo: is this class used? -> probably can be removed
 export default class Search {
   //private sh = spawn('sh', []);
   private fzfPath = getFzfPath();
@@ -120,8 +125,7 @@ export default class Search {
       const command = buildSearch(this.fzfPath, text.replace(/::/g, '').toLowerCase());
 
 
-      console.log("final command:", command)
-      //this.sh.stdin.write(Buffer.from(command));
+      // console.log("final command:", command)
       const result = await executeCommand(command);
       this.onResultData(result);
 
@@ -140,10 +144,7 @@ function executeCommand(command: string): Promise<string> {
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
       if (error) {
-        // console.log("stderr:", stderr);
-        // console.log("stdout:", stdout);
-        //reject(error);
-        console.log("error obj:", error);
+        // console.log("error obj:", error);
         reject(`Error: ${error.message}\nStderr: ${stderr}`);
       } else {
         resolve(stdout);
@@ -151,5 +152,3 @@ function executeCommand(command: string): Promise<string> {
     });
   });
 }
-
-
