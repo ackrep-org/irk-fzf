@@ -90,7 +90,7 @@ further characters can be entered to refine the result. See the following exampl
 
 Inside the editor, open `src/extension.ts` and press `F5`. This will compile and run the extension in a new Extension Development Host window.
 
-Run the `irk-fzf` command from the Command Palette (`Ctrl+Shift+P`) in the new window:
+Run the `irk-fzf.search` command from the Command Palette (`Ctrl+Shift+P`) in the new window:
 
 See also [vsc-extension-quickstart.md](vsc-extension-quickstart.md).
 ing of your choice
@@ -102,4 +102,4 @@ ing of your choice
     - `npm install`
     - `npm install -g @vscode/vsce`
     - `vsce package`
-    - this creates a file like `extension-name.vsix`
+        - this creates a file like `extension-name.vsix`

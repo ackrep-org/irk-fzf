@@ -2,7 +2,7 @@
   "name": "irk-fzf",
   "displayName": "irk-fzf",
   "description": "fuzzy auto completion for pyirk",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "repository": "https://github.com/ackrep-org/irk-fzf",
   "engines": {
     "vscode": "^1.83.0"
